@@ -7,7 +7,7 @@
 //
 
 #import "SWTableViewCell.h"
-#import "SWUtilityButtonView.h"
+#import "SWUtilityView.h"
 
 static NSString * const kTableViewCellContentView = @"UITableViewCellContentView";
 
@@ -25,15 +25,15 @@ static NSString * const kTableViewCellContentView = @"UITableViewCellContentView
 @property (nonatomic, assign) CGFloat additionalRightPadding;
 
 @property (nonatomic, strong) UIScrollView *cellScrollView;
-@property (nonatomic, strong) SWUtilityButtonView *leftUtilityButtonsView, *rightUtilityButtonsView;
+@property (nonatomic, strong) SWUtilityView *leftUtilityViewsView, *rightUtilityViewsView;
 @property (nonatomic, strong) UIView *leftUtilityClipView, *rightUtilityClipView;
 @property (nonatomic, strong) NSLayoutConstraint *leftUtilityClipConstraint, *rightUtilityClipConstraint;
 
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
-- (CGFloat)leftUtilityButtonsWidth;
-- (CGFloat)rightUtilityButtonsWidth;
+- (CGFloat)leftUtilityViewsWidth;
+- (CGFloat)rightUtilityViewsWidth;
 - (CGFloat)utilityButtonsPadding;
 
 - (CGPoint)contentOffsetForCellState:(SWCellState)state;
@@ -128,20 +128,18 @@ static NSString * const kTableViewCellContentView = @"UITableViewCellContentView
 
     self.leftUtilityClipView = [[UIView alloc] init];
     self.leftUtilityClipConstraint = [NSLayoutConstraint constraintWithItem:self.leftUtilityClipView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0];
-    self.leftUtilityButtonsView = [[SWUtilityButtonView alloc] initWithUtilityButtons:nil
-                                                                           parentCell:self
-                                                                utilityButtonSelector:@selector(leftUtilityButtonHandler:)];
+    self.leftUtilityViewsView = [[SWUtilityView alloc] initWithUtilityViews:nil
+                                                                   parentCell:self];
 
     self.rightUtilityClipView = [[UIView alloc] initWithFrame:self.bounds];
     self.rightUtilityClipConstraint = [NSLayoutConstraint constraintWithItem:self.rightUtilityClipView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.0 constant:0.0];
-    self.rightUtilityButtonsView = [[SWUtilityButtonView alloc] initWithUtilityButtons:nil
-                                                                            parentCell:self
-                                                                 utilityButtonSelector:@selector(rightUtilityButtonHandler:)];
+    self.rightUtilityViewsView = [[SWUtilityView alloc] initWithUtilityViews:nil
+                                                                    parentCell:self];
 
     
     UIView *clipViews[] = { self.rightUtilityClipView, self.leftUtilityClipView };
     NSLayoutConstraint *clipConstraints[] = { self.rightUtilityClipConstraint, self.leftUtilityClipConstraint };
-    UIView *buttonViews[] = { self.rightUtilityButtonsView, self.leftUtilityButtonsView };
+    UIView *buttonViews[] = { self.rightUtilityViewsView, self.leftUtilityViewsView };
     NSLayoutAttribute alignmentAttributes[] = { NSLayoutAttributeRight, NSLayoutAttributeLeft };
     
     for (NSUInteger i = 0; i < 2; ++i)
@@ -227,11 +225,11 @@ static NSString * const kTableViewPanState = @"state";
             BOOL inCurrentCell = CGRectContainsPoint(self.frame, locationInTableView);
             if(!inCurrentCell && _cellState != kCellStateCenter)
             {
-                if ([self.delegate respondsToSelector:@selector(swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:)])
+                if ([self.delegate respondsToSelector:@selector(swipeableTableViewCellShouldHideUtilityViewsOnSwipe:)])
                 {
-                    if([self.delegate swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:self])
+                    if([self.delegate swipeableTableViewCellShouldHideUtilityViewsOnSwipe:self])
                     {
-                        [self hideUtilityButtonsAnimated:YES];
+                        [self hideUtilityViewsAnimated:YES];
                     }
                 }
             }
@@ -239,47 +237,47 @@ static NSString * const kTableViewPanState = @"state";
     }
 }
 
-- (void)setLeftUtilityButtons:(NSArray *)leftUtilityButtons
+- (void)setLeftUtilityViews:(NSArray *)leftUtilityViews
 {
-    if (![_leftUtilityButtons sw_isEqualToButtons:leftUtilityButtons]) {
-        _leftUtilityButtons = leftUtilityButtons;
+    if (![_leftUtilityViews sw_isEqualToButtons:leftUtilityViews]) {
+        _leftUtilityViews = leftUtilityViews;
         
-        self.leftUtilityButtonsView.utilityButtons = leftUtilityButtons;
+        self.leftUtilityViewsView.utilityViews = leftUtilityViews;
 
-        [self.leftUtilityButtonsView layoutIfNeeded];
+        [self.leftUtilityViewsView layoutIfNeeded];
         [self layoutIfNeeded];
     }
 }
 
-- (void)setLeftUtilityButtons:(NSArray *)leftUtilityButtons WithButtonWidth:(CGFloat) width
+- (void)setLeftUtilityViews:(NSArray *)leftUtilityViews withWidth:(CGFloat) width
 {
-    _leftUtilityButtons = leftUtilityButtons;
+    _leftUtilityViews = leftUtilityViews;
     
-    [self.leftUtilityButtonsView setUtilityButtons:leftUtilityButtons WithButtonWidth:width];
+    [self.leftUtilityViewsView setUtilityViews:leftUtilityViews withWidth:width];
 
-    [self.leftUtilityButtonsView layoutIfNeeded];
+    [self.leftUtilityViewsView layoutIfNeeded];
     [self layoutIfNeeded];
 }
 
-- (void)setRightUtilityButtons:(NSArray *)rightUtilityButtons
+- (void)setRightUtilityViews:(NSArray *)rightUtilityViews
 {
-    if (![_rightUtilityButtons sw_isEqualToButtons:rightUtilityButtons]) {
-        _rightUtilityButtons = rightUtilityButtons;
+    if (![_rightUtilityViews sw_isEqualToButtons:rightUtilityViews]) {
+        _rightUtilityViews = rightUtilityViews;
         
-        self.rightUtilityButtonsView.utilityButtons = rightUtilityButtons;
+        self.rightUtilityViewsView.utilityViews = rightUtilityViews;
 
-        [self.rightUtilityButtonsView layoutIfNeeded];
+        [self.rightUtilityViewsView layoutIfNeeded];
         [self layoutIfNeeded];
     }
 }
 
-- (void)setRightUtilityButtons:(NSArray *)rightUtilityButtons WithButtonWidth:(CGFloat) width
+- (void)setRightUtilityViews:(NSArray *)rightUtilityViews withWidth:(CGFloat) width
 {
-    _rightUtilityButtons = rightUtilityButtons;
+    _rightUtilityViews = rightUtilityViews;
     
-    [self.rightUtilityButtonsView setUtilityButtons:rightUtilityButtons WithButtonWidth:width];
+    [self.rightUtilityViewsView setUtilityViews:rightUtilityViews withWidth:width];
 
-    [self.rightUtilityButtonsView layoutIfNeeded];
+    [self.rightUtilityViewsView layoutIfNeeded];
     [self layoutIfNeeded];
 }
 
@@ -305,7 +303,7 @@ static NSString * const kTableViewPanState = @"state";
     
     // Offset the contentView origin so that it appears correctly w/rt the enclosing scroll view (to which we moved it).
     CGRect frame = self.contentView.frame;
-    frame.origin.x = [self leftUtilityButtonsWidth];
+    frame.origin.x = [self leftUtilityViewsWidth];
     _contentCellView.frame = frame;
     
     self.cellScrollView.contentSize = CGSizeMake(CGRectGetWidth(self.frame) + [self utilityButtonsPadding], CGRectGetHeight(self.frame));
@@ -339,20 +337,20 @@ static NSString * const kTableViewPanState = @"state";
 {
     [super prepareForReuse];
     
-    [self hideUtilityButtonsAnimated:NO];
+    [self hideUtilityViewsAnimated:NO];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     // Work around stupid background-destroying override magic that UITableView seems to perform on contained buttons.
     
-    [self.leftUtilityButtonsView pushBackgroundColors];
-    [self.rightUtilityButtonsView pushBackgroundColors];
+    [self.leftUtilityViewsView pushBackgroundColors];
+    [self.rightUtilityViewsView pushBackgroundColors];
     
     [super setSelected:selected animated:animated];
     
-    [self.leftUtilityButtonsView popBackgroundColors];
-    [self.rightUtilityButtonsView popBackgroundColors];
+    [self.leftUtilityViewsView popBackgroundColors];
+    [self.rightUtilityViewsView popBackgroundColors];
 }
 
 - (void)didTransitionToState:(UITableViewCellStateMask)state {
@@ -415,7 +413,7 @@ static NSString * const kTableViewPanState = @"state";
     else
     {
         // Scroll back to center
-        [self hideUtilityButtonsAnimated:YES];
+        [self hideUtilityViewsAnimated:YES];
     }
 }
 
@@ -467,27 +465,7 @@ static NSString * const kTableViewPanState = @"state";
 
 #pragma mark - Utility buttons handling
 
-- (void)rightUtilityButtonHandler:(id)sender
-{
-    SWUtilityButtonTapGestureRecognizer *utilityButtonTapGestureRecognizer = (SWUtilityButtonTapGestureRecognizer *)sender;
-    NSUInteger utilityButtonIndex = utilityButtonTapGestureRecognizer.buttonIndex;
-    if ([self.delegate respondsToSelector:@selector(swipeableTableViewCell:didTriggerRightUtilityButtonWithIndex:)])
-    {
-        [self.delegate swipeableTableViewCell:self didTriggerRightUtilityButtonWithIndex:utilityButtonIndex];
-    }
-}
-
-- (void)leftUtilityButtonHandler:(id)sender
-{
-    SWUtilityButtonTapGestureRecognizer *utilityButtonTapGestureRecognizer = (SWUtilityButtonTapGestureRecognizer *)sender;
-    NSUInteger utilityButtonIndex = utilityButtonTapGestureRecognizer.buttonIndex;
-    if ([self.delegate respondsToSelector:@selector(swipeableTableViewCell:didTriggerLeftUtilityButtonWithIndex:)])
-    {
-        [self.delegate swipeableTableViewCell:self didTriggerLeftUtilityButtonWithIndex:utilityButtonIndex];
-    }
-}
-
-- (void)hideUtilityButtonsAnimated:(BOOL)animated
+- (void)hideUtilityViewsAnimated:(BOOL)animated
 {
     if (_cellState != kCellStateCenter)
     {
@@ -500,7 +478,7 @@ static NSString * const kTableViewPanState = @"state";
     }
 }
 
-- (void)showLeftUtilityButtonsAnimated:(BOOL)animated {
+- (void)showLeftUtilityViewsAnimated:(BOOL)animated {
     if (_cellState != kCellStateLeft)
     {
         [self.cellScrollView setContentOffset:[self contentOffsetForCellState:kCellStateLeft] animated:animated];
@@ -512,7 +490,7 @@ static NSString * const kTableViewPanState = @"state";
     }
 }
 
-- (void)showRightUtilityButtonsAnimated:(BOOL)animated {
+- (void)showRightUtilityViewsAnimated:(BOOL)animated {
     if (_cellState != kCellStateRight)
     {
         [self.cellScrollView setContentOffset:[self contentOffsetForCellState:kCellStateRight] animated:animated];
@@ -524,37 +502,37 @@ static NSString * const kTableViewPanState = @"state";
     }
 }
 
-- (BOOL)isUtilityButtonsHidden {
+- (BOOL)isUtilityViewHidden {
     return _cellState == kCellStateCenter;
 }
 
 
 #pragma mark - Geometry helpers
 
-- (CGFloat)leftUtilityButtonsWidth
+- (CGFloat)leftUtilityViewsWidth
 {
 #if CGFLOAT_IS_DOUBLE
-    return round(CGRectGetWidth(self.leftUtilityButtonsView.frame));
+    return round(CGRectGetWidth(self.leftUtilityViewsView.frame));
 #else
-    return roundf(CGRectGetWidth(self.leftUtilityButtonsView.frame));
+    return roundf(CGRectGetWidth(self.leftUtilityViewsView.frame));
 #endif
 }
 
-- (CGFloat)rightUtilityButtonsWidth
+- (CGFloat)rightUtilityViewsWidth
 {
 #if CGFLOAT_IS_DOUBLE
-    return round(CGRectGetWidth(self.rightUtilityButtonsView.frame) + self.additionalRightPadding);
+    return round(CGRectGetWidth(self.rightUtilityViewsView.frame) + self.additionalRightPadding);
 #else
-    return roundf(CGRectGetWidth(self.rightUtilityButtonsView.frame) + self.additionalRightPadding);
+    return roundf(CGRectGetWidth(self.rightUtilityViewsView.frame) + self.additionalRightPadding);
 #endif
 }
 
 - (CGFloat)utilityButtonsPadding
 {
 #if CGFLOAT_IS_DOUBLE
-    return round([self leftUtilityButtonsWidth] + [self rightUtilityButtonsWidth]);
+    return round([self leftUtilityViewsWidth] + [self rightUtilityViewsWidth]);
 #else
-    return roundf([self leftUtilityButtonsWidth] + [self rightUtilityButtonsWidth]);
+    return roundf([self leftUtilityViewsWidth] + [self rightUtilityViewsWidth]);
 #endif
 }
 
@@ -565,7 +543,7 @@ static NSString * const kTableViewPanState = @"state";
     switch (state)
     {
         case kCellStateCenter:
-            scrollPt.x = [self leftUtilityButtonsWidth];
+            scrollPt.x = [self leftUtilityViewsWidth];
             break;
             
         case kCellStateRight:
@@ -609,7 +587,7 @@ static NSString * const kTableViewPanState = @"state";
         
         if (self.isEditing) {
             self.leftUtilityClipConstraint.constant = 0;
-            self.cellScrollView.contentOffset = CGPointMake([self leftUtilityButtonsWidth], 0);
+            self.cellScrollView.contentOffset = CGPointMake([self leftUtilityViewsWidth], 0);
             _cellState = kCellStateCenter;
         }
         
@@ -646,7 +624,7 @@ static NSString * const kTableViewPanState = @"state";
 {
     if (velocity.x >= 0.5f)
     {
-        if (_cellState == kCellStateLeft || !self.rightUtilityButtons || self.rightUtilityButtonsWidth == 0.0)
+        if (_cellState == kCellStateLeft || !self.rightUtilityViews || self.rightUtilityViewsWidth == 0.0)
         {
             _cellState = kCellStateCenter;
         }
@@ -657,7 +635,7 @@ static NSString * const kTableViewPanState = @"state";
     }
     else if (velocity.x <= -0.5f)
     {
-        if (_cellState == kCellStateRight || !self.leftUtilityButtons || self.leftUtilityButtonsWidth == 0.0)
+        if (_cellState == kCellStateRight || !self.leftUtilityViews || self.leftUtilityViewsWidth == 0.0)
         {
             _cellState = kCellStateCenter;
         }
@@ -668,8 +646,8 @@ static NSString * const kTableViewPanState = @"state";
     }
     else
     {
-        CGFloat leftThreshold = [self contentOffsetForCellState:kCellStateLeft].x + (self.leftUtilityButtonsWidth / 2);
-        CGFloat rightThreshold = [self contentOffsetForCellState:kCellStateRight].x - (self.rightUtilityButtonsWidth / 2);
+        CGFloat leftThreshold = [self contentOffsetForCellState:kCellStateLeft].x + (self.leftUtilityViewsWidth / 2);
+        CGFloat rightThreshold = [self contentOffsetForCellState:kCellStateRight].x - (self.rightUtilityViewsWidth / 2);
         
         if (targetContentOffset->x > rightThreshold)
         {
@@ -692,11 +670,11 @@ static NSString * const kTableViewPanState = @"state";
     
     if (_cellState != kCellStateCenter)
     {
-        if ([self.delegate respondsToSelector:@selector(swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:)])
+        if ([self.delegate respondsToSelector:@selector(swipeableTableViewCellShouldHideUtilityViewsOnSwipe:)])
         {
             for (SWTableViewCell *cell in [self.containingTableView visibleCells]) {
-                if (cell != self && [cell isKindOfClass:[SWTableViewCell class]] && [self.delegate swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:cell]) {
-                    [cell hideUtilityButtonsAnimated:YES];
+                if (cell != self && [cell isKindOfClass:[SWTableViewCell class]] && [self.delegate swipeableTableViewCellShouldHideUtilityViewsOnSwipe:cell]) {
+                    [cell hideUtilityViewsAnimated:YES];
                 }
             }
         }
@@ -707,36 +685,36 @@ static NSString * const kTableViewPanState = @"state";
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (scrollView.contentOffset.x > [self leftUtilityButtonsWidth])
+    if (scrollView.contentOffset.x > [self leftUtilityViewsWidth])
     {
-        if ([self rightUtilityButtonsWidth] > 0)
+        if ([self rightUtilityViewsWidth] > 0)
         {
             if (self.delegate && [self.delegate respondsToSelector:@selector(swipeableTableViewCell:canSwipeToState:)])
             {
                 BOOL shouldScroll = [self.delegate swipeableTableViewCell:self canSwipeToState:kCellStateRight];
                 if (!shouldScroll)
                 {
-                    scrollView.contentOffset = CGPointMake([self leftUtilityButtonsWidth], 0);
+                    scrollView.contentOffset = CGPointMake([self leftUtilityViewsWidth], 0);
                 }
             }
         }
         else
         {
-            [scrollView setContentOffset:CGPointMake([self leftUtilityButtonsWidth], 0)];
+            [scrollView setContentOffset:CGPointMake([self leftUtilityViewsWidth], 0)];
             self.tapGestureRecognizer.enabled = YES;
         }
     }
     else
     {
         // Expose the left button view
-        if ([self leftUtilityButtonsWidth] > 0)
+        if ([self leftUtilityViewsWidth] > 0)
         {
             if (self.delegate && [self.delegate respondsToSelector:@selector(swipeableTableViewCell:canSwipeToState:)])
             {
                 BOOL shouldScroll = [self.delegate swipeableTableViewCell:self canSwipeToState:kCellStateLeft];
                 if (!shouldScroll)
                 {
-                    scrollView.contentOffset = CGPointMake([self leftUtilityButtonsWidth], 0);
+                    scrollView.contentOffset = CGPointMake([self leftUtilityViewsWidth], 0);
                 }
             }
         }

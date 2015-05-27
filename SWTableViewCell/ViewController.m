@@ -119,8 +119,8 @@
         UMTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"UMCell" forIndexPath:indexPath];
         
         // optionally specify a width that each set of utility buttons will share
-        [cell setLeftUtilityButtons:[self leftButtons] WithButtonWidth:32.0f];
-        [cell setRightUtilityButtons:[self rightButtons] WithButtonWidth:58.0f];
+        [cell setLeftUtilityViews:[self leftButtons] withWidth:32.0f];
+        [cell setRightUtilityViews:[self rightButtons] withWidth:58.0f];
         cell.delegate = self;
         
         cell.label.text = [NSString stringWithFormat:@"Section: %ld, Seat: %ld", (long)indexPath.section, (long)indexPath.row];
@@ -137,8 +137,8 @@
             
             cell = [[SWTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
             
-            cell.leftUtilityButtons = [self leftButtons];
-            cell.rightUtilityButtons = [self rightButtons];
+            cell.leftUtilityViews = [self leftButtons];
+            cell.rightUtilityViews = [self rightButtons];
             cell.delegate = self;
         }
         
@@ -155,35 +155,35 @@
 
 - (NSArray *)rightButtons
 {
-    NSMutableArray *rightUtilityButtons = [NSMutableArray new];
-    [rightUtilityButtons sw_addUtilityButtonWithColor:
+    NSMutableArray *rightUtilityViews = [NSMutableArray new];
+    [rightUtilityViews sw_addUtilityButtonWithColor:
      [UIColor colorWithRed:0.78f green:0.78f blue:0.8f alpha:1.0]
                                                 title:@"More"];
-    [rightUtilityButtons sw_addUtilityButtonWithColor:
+    [rightUtilityViews sw_addUtilityButtonWithColor:
      [UIColor colorWithRed:1.0f green:0.231f blue:0.188 alpha:1.0f]
                                                 title:@"Delete"];
     
-    return rightUtilityButtons;
+    return rightUtilityViews;
 }
 
 - (NSArray *)leftButtons
 {
-    NSMutableArray *leftUtilityButtons = [NSMutableArray new];
+    NSMutableArray *leftUtilityViews = [NSMutableArray new];
     
-    [leftUtilityButtons sw_addUtilityButtonWithColor:
+    [leftUtilityViews sw_addUtilityButtonWithColor:
      [UIColor colorWithRed:0.07 green:0.75f blue:0.16f alpha:1.0]
                                                 icon:[UIImage imageNamed:@"check.png"]];
-    [leftUtilityButtons sw_addUtilityButtonWithColor:
+    [leftUtilityViews sw_addUtilityButtonWithColor:
      [UIColor colorWithRed:1.0f green:1.0f blue:0.35f alpha:1.0]
                                                 icon:[UIImage imageNamed:@"clock.png"]];
-    [leftUtilityButtons sw_addUtilityButtonWithColor:
+    [leftUtilityViews sw_addUtilityButtonWithColor:
      [UIColor colorWithRed:1.0f green:0.231f blue:0.188f alpha:1.0]
                                                 icon:[UIImage imageNamed:@"cross.png"]];
-    [leftUtilityButtons sw_addUtilityButtonWithColor:
+    [leftUtilityViews sw_addUtilityButtonWithColor:
      [UIColor colorWithRed:0.55f green:0.27f blue:0.07f alpha:1.0]
                                                 icon:[UIImage imageNamed:@"list.png"]];
     
-    return leftUtilityButtons;
+    return leftUtilityViews;
 }
 
 // Set row height on an individual basis
@@ -247,7 +247,7 @@
             UIAlertView *alertTest = [[UIAlertView alloc] initWithTitle:@"Hello" message:@"More more more" delegate:nil cancelButtonTitle:@"cancel" otherButtonTitles: nil];
             [alertTest show];
             
-            [cell hideUtilityButtonsAnimated:YES];
+            [cell hideUtilityViewsAnimated:YES];
             break;
         }
         case 1:
@@ -264,7 +264,7 @@
     }
 }
 
-- (BOOL)swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:(SWTableViewCell *)cell
+- (BOOL)swipeableTableViewCellShouldHideUtilityViewsOnSwipe:(SWTableViewCell *)cell
 {
     // allow just one cell's utility button to be open at once
     return YES;

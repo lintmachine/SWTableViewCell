@@ -11,8 +11,7 @@
 		810308921846579B00C378F0 /* SWCellScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 810308881846579B00C378F0 /* SWCellScrollView.m */; };
 		810308931846579B00C378F0 /* SWLongPressGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8103088A1846579B00C378F0 /* SWLongPressGestureRecognizer.m */; };
 		810308941846579B00C378F0 /* SWTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8103088C1846579B00C378F0 /* SWTableViewCell.m */; };
-		810308951846579B00C378F0 /* SWUtilityButtonTapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8103088E1846579B00C378F0 /* SWUtilityButtonTapGestureRecognizer.m */; };
-		810308961846579B00C378F0 /* SWUtilityButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 810308901846579B00C378F0 /* SWUtilityButtonView.m */; };
+		810308961846579B00C378F0 /* SWUtilityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 810308901846579B00C378F0 /* SWUtilityView.m */; };
 		810308A2184D682700C378F0 /* um.png in Resources */ = {isa = PBXBuildFile; fileRef = 810308A1184D682700C378F0 /* um.png */; };
 		810308A5184D688D00C378F0 /* UMTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 810308A4184D688D00C378F0 /* UMTableViewCell.m */; };
 		AF28B0F117F77DA300A77ABB /* clock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AF28B0F017F77DA300A77ABB /* clock@2x.png */; };
@@ -42,10 +41,8 @@
 		8103088A1846579B00C378F0 /* SWLongPressGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWLongPressGestureRecognizer.m; sourceTree = "<group>"; };
 		8103088B1846579B00C378F0 /* SWTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWTableViewCell.h; sourceTree = "<group>"; };
 		8103088C1846579B00C378F0 /* SWTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWTableViewCell.m; sourceTree = "<group>"; };
-		8103088D1846579B00C378F0 /* SWUtilityButtonTapGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWUtilityButtonTapGestureRecognizer.h; sourceTree = "<group>"; };
-		8103088E1846579B00C378F0 /* SWUtilityButtonTapGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWUtilityButtonTapGestureRecognizer.m; sourceTree = "<group>"; };
-		8103088F1846579B00C378F0 /* SWUtilityButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWUtilityButtonView.h; sourceTree = "<group>"; };
-		810308901846579B00C378F0 /* SWUtilityButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWUtilityButtonView.m; sourceTree = "<group>"; };
+		8103088F1846579B00C378F0 /* SWUtilityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWUtilityView.h; sourceTree = "<group>"; };
+		810308901846579B00C378F0 /* SWUtilityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWUtilityView.m; sourceTree = "<group>"; };
 		810308A1184D682700C378F0 /* um.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = um.png; sourceTree = "<group>"; };
 		810308A3184D688D00C378F0 /* UMTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMTableViewCell.h; sourceTree = "<group>"; };
 		810308A4184D688D00C378F0 /* UMTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMTableViewCell.m; sourceTree = "<group>"; };
@@ -98,10 +95,8 @@
 				8103088A1846579B00C378F0 /* SWLongPressGestureRecognizer.m */,
 				8103088B1846579B00C378F0 /* SWTableViewCell.h */,
 				8103088C1846579B00C378F0 /* SWTableViewCell.m */,
-				8103088D1846579B00C378F0 /* SWUtilityButtonTapGestureRecognizer.h */,
-				8103088E1846579B00C378F0 /* SWUtilityButtonTapGestureRecognizer.m */,
-				8103088F1846579B00C378F0 /* SWUtilityButtonView.h */,
-				810308901846579B00C378F0 /* SWUtilityButtonView.m */,
+				8103088F1846579B00C378F0 /* SWUtilityView.h */,
+				810308901846579B00C378F0 /* SWUtilityView.m */,
 			);
 			path = PodFiles;
 			sourceTree = "<group>";
@@ -200,7 +195,7 @@
 				ORGANIZATIONNAME = "Chris Wendel";
 				TargetAttributes = {
 					AF34B76417DEE2B100BD9082 = {
-						DevelopmentTeam = CRQMUWXT26;
+						DevelopmentTeam = 8ZQGAEUG3N;
 					};
 				};
 			};
@@ -251,11 +246,10 @@
 				AF34B77917DEE2B400BD9082 /* AppDelegate.m in Sources */,
 				810308921846579B00C378F0 /* SWCellScrollView.m in Sources */,
 				810308911846579B00C378F0 /* NSMutableArray+SWUtilityButtons.m in Sources */,
-				810308961846579B00C378F0 /* SWUtilityButtonView.m in Sources */,
+				810308961846579B00C378F0 /* SWUtilityView.m in Sources */,
 				810308A5184D688D00C378F0 /* UMTableViewCell.m in Sources */,
 				810308941846579B00C378F0 /* SWTableViewCell.m in Sources */,
 				AF34B78517DEE2B800BD9082 /* ViewController.m in Sources */,
-				810308951846579B00C378F0 /* SWUtilityButtonTapGestureRecognizer.m in Sources */,
 				810308931846579B00C378F0 /* SWLongPressGestureRecognizer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
